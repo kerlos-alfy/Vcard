@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Eng. Sherif Mahmoud Emara | Operations Director</title>
+
+  <meta property="og:title" content="Eng. Sherif Mahmoud Emara | Operations Director">
+  <meta property="og:description" content="Agile Prime - Premium Digital Card">
+  <meta property="og:image" content="assets/images/Eng/EngOsama.jpg">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-black: #000000;
+      --card-bg: #0a0a0a;
+      --gold-main: #a78d57;
+      --gold-bright: #f0e2b6;
+      --border-dim: #1f1f1f;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: var(--bg-black);
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* --- Splash Screen --- */
+    .splash-screen {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    .splash-logo {
+      width: 90px;
+      margin-bottom: 15px;
+      animation: logoPulse 2s infinite ease-in-out;
+    }
+    @keyframes logoPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .splash-hidden { opacity: 0; pointer-events: none; }
+
+    /* --- Toast Notification --- */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid var(--gold-main);
+      padding: 12px 24px;
+      border-radius: 30px;
+      color: var(--gold-main);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s;
+      opacity: 0;
+      z-index: 10000;
+      white-space: nowrap;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* --- Card Wrapper --- */
+    .vcard-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      padding: 2px;
+      border-radius: 26px;
+      background: var(--border-dim);
+      box-shadow: 0 40px 100px rgba(0,0,0,0.95);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .vcard-wrapper.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .vcard-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400%;
+      height: 400%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        transparent 20%,
+        var(--gold-main) 45%,
+        var(--gold-bright) 50%,
+        var(--gold-main) 55%,
+        transparent 80%,
+        transparent 100%
+      );
+      transform: translate(-50%, -50%);
+      animation: borderSpin 5s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes borderSpin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to   { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .vcard {
+      position: relative;
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 45px 25px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .avatar-container {
+      width: 125px;
+      height: 125px;
+      margin: 0 auto 20px;
+      position: relative;
+      padding: 3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #333, var(--gold-main), #333);
+    }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--card-bg);
+      background: #111;
+    }
+    .verified-badge {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 26px;
+      height: 26px;
+      background: var(--gold-main);
+      color: #000;
+      border: 3px solid var(--card-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: linear-gradient(
+        to right,
+        #fff 20%,
+        var(--gold-main) 40%,
+        var(--gold-bright) 50%,
+        var(--gold-main) 60%,
+        #fff 80%
+      );
+      background-size: 200% auto;
+      color: #fff;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineText 4s linear infinite;
+    }
+    @keyframes shineText {
+      to { background-position: 200% center; }
+    }
+
+    .role {
+      color: var(--gold-main);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 25px;
+    }
+
+    .link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .link-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .link-item:active {
+      background: rgba(167, 141, 87, 0.1);
+      border-color: var(--gold-main);
+    }
+    .icon-box {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: var(--gold-main);
+      font-size: 1.1rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+    }
+    .link-text {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      flex: 1;
+    }
+    .label {
+      font-size: 0.6rem;
+      color: #777;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .value {
+      font-size: 0.9rem;
+      color: #eee;
+      font-weight: 500;
+    }
+    .copy-icon {
+      font-size: 0.8rem;
+      color: #555;
+      margin-left: 10px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-gold {
+      flex: 1;
+      border: none;
+      padding: 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--gold-main), #7a653a);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 5px 20px rgba(167, 141, 87, 0.15);
+      cursor: pointer;
+    }
+    .btn-gold:active { transform: scale(0.97); }
+
+    .btn-action {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border-radius: 16px;
+      width: 56px;
+      border: 1px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .btn-qr {
+      width: 56px;
+      background: transparent;
+      color: var(--gold-main);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .btn-qr:active {
+      background: rgba(167, 141, 87, 0.1);
+      color: #fff;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 0.65rem;
+      color: #555;
+      letter-spacing: 1px;
+    }
+
+    /* --- QR Popup --- */
+    .qr-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+    .qr-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .qr-box {
+      position: relative;
+      background: #111;
+      border-radius: 20px;
+      padding: 24px 20px 30px;
+      max-width: 320px;
+      width: 88%;
+      text-align: center;
+      border: 1px solid var(--gold-main);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    }
+    .qr-close {
+      position: absolute;
+      right: 14px;
+      top: 10px;
+      background: transparent;
+      border: none;
+      color: #888;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .qr-close:active { color:#ccc; }
+    .qr-title {
+      color: var(--gold-main);
+      margin-bottom: 18px;
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+    }
+    .qr-caption {
+      margin-top: 18px;
+      color: #666;
+      font-size: 0.8rem;
+    }
+    .qr-frame {
+      background: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      display: inline-block;
+      position: relative;
+    }
+    .qr-logo-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 45px;
+      height: 45px;
+      background: #fff;
+      border-radius: 50%;
+      padding: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast" class="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toastMsg">Action Successful</span>
+  </div>
+
+  <div class="splash-screen" id="splash">
+    <img src="assets/images/logo.png" class="splash-logo" alt="Logo"
+         onerror="this.src='https://ui-avatars.com/api/?name=A&background=a78d57&color=000&size=100&rounded=true'">
+  </div>
+
+  <div class="vcard-wrapper" id="mainCard">
+    <div class="vcard">
+      <div class="avatar-container">
+        <img
+          src="assets/images/Eng/EngSherif.jpg"
+          id="profileImage"
+          class="avatar"
+          crossorigin="anonymous"
+          onerror="this.src='https://ui-avatars.com/api/?name=Sherif+Emara&background=000&color=a78d57&size=200'">
+        <div class="verified-badge">
+          <i class="fa-solid fa-check"></i>
+        </div>
+      </div>
+
+      <h1 class="name">Eng. Sherif Mahmoud Emara</h1>
+      <div class="role">Operations Director</div>
+
+      <div class="link-list">
+        <!-- Mobile 1 -->
+        <a href="tel:+966537606681" class="link-item"
+           oncontextmenu="copyText('+966 53 760 6681', 'Phone Copied'); return false;">
+          <div class="icon-box">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Mobile</span>
+            <span class="value">+966 53 760 6681</span>
+          </div>
+          <i class="fa-regular fa-copy copy-icon"></i>
+        </a>
+
+        <!-- Mobile 2 -->
+        <a href="tel:+201017998945" class="link-item"
+           oncontextmenu="copyText('+20 101 799 8945', 'Phone Copied'); return false;">
+          <div class="icon-box">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Mobile</span>
+            <span class="value">+20 101 799 8945</span>
+          </div>
+          <i class="fa-regular fa-copy copy-icon"></i>
+        </a>
+
+        <!-- Mobile 3 -->
+        <a href="tel:+971586913269" class="link-item"
+           oncontextmenu="copyText('+971 58 691 3269', 'Phone Copied'); return false;">
+          <div class="icon-box">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Mobile</span>
+            <span class="value">+971 58 691 3269</span>
+          </div>
+          <i class="fa-regular fa-copy copy-icon"></i>
+        </a>
+
+        <!-- Mobile 4 -->
+        <a href="tel:+971564604608" class="link-item"
+           oncontextmenu="copyText('+971 56 460 4608', 'Phone Copied'); return false;">
+          <div class="icon-box">
+            <i class="fa-solid fa-phone"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Mobile</span>
+            <span class="value">+971 56 460 4608</span>
+          </div>
+          <i class="fa-regular fa-copy copy-icon"></i>
+        </a>
+
+        <!-- Email -->
+        <div class="link-item" onclick="copyText('SHERIFEMARA@AGILERAC.COM', 'Email Copied')">
+          <div class="icon-box">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Email</span>
+            <span class="value">SHERIFEMARA@AGILERAC.COM</span>
+          </div>
+          <i class="fa-regular fa-copy copy-icon" style="opacity:0.5"></i>
+        </div>
+
+        <!-- Website -->
+        <a href="https://agilerac.com" target="_blank" class="link-item">
+          <div class="icon-box">
+            <i class="fa-solid fa-globe"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Website</span>
+            <span class="value">agilerac.com</span>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square copy-icon" style="opacity:0.5"></i>
+        </a>
+
+        <!-- Location -->
+        <a href="https://www.google.com/maps/search/?api=1&query=Bay+View+Tower+1708+Business+Bay+Dubai"
+           target="_blank" class="link-item">
+          <div class="icon-box">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div class="link-text">
+            <span class="label">Location</span>
+            <span class="value">Bay View Tower, Dubai</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="actions">
+        <button class="btn-gold" id="saveBtn" onclick="downloadVCardWithImage()">
+          <i class="fa-solid fa-download"></i> Save
+        </button>
+        <button class="btn-action" onclick="shareCard()">
+          <i class="fa-solid fa-share-nodes"></i>
+        </button>
+        <button class="btn-qr" onclick="toggleQR()">
+          <i class="fa-solid fa-qrcode"></i>
+        </button>
+      </div>
+
+      <div class="footer">Agile Prime General Contracting</div>
+    </div>
+  </div>
+
+  <!-- QR POPUP -->
+  <div class="qr-overlay" id="qrOverlay" onclick="toggleQR()">
+    <div class="qr-box" onclick="event.stopPropagation()">
+      <button class="qr-close" onclick="toggleQR()" aria-label="Close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <h3 class="qr-title">Scan to Connect</h3>
+      <div class="qr-frame">
+        <div id="qrcode"></div>
+        <div class="qr-logo-center">
+          <img src="assets/images/logo.png" style="width:100%;"
+               onerror="this.src='https://ui-avatars.com/api/?name=A&background=fff&color=000'">
+        </div>
+      </div>
+      <div class="qr-caption">Agile Prime General Contracting</div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('splash').classList.add('splash-hidden');
+        setTimeout(() => {
+          document.getElementById('mainCard').classList.add('visible');
+        }, 200);
+      }, 1500);
+    });
+
+    const vCardData = {
+      fn: "Sherif Mahmoud",
+      ln: "Emara",
+      title: "Operations Director",
+      org: "Agile Prime General Contracting L.L.C",
+      phone: "+966537606681",
+      email: "SHERIFEMARA@AGILERAC.COM",
+      url: "https://agilerac.com",
+      address: ";;Bay View Tower 1708, Business Bay;Dubai;;;UAE",
+      photoUrl: "assets/images/Eng/EngOsama.jpg"
+    };
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = message;
+      toast.classList.add('show');
+      if (navigator.vibrate) navigator.vibrate(50);
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function copyText(text, label) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(label));
+      } else {
+        const temp = document.createElement('input');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showToast(label);
+      }
+    }
+
+    async function shareCard() {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Eng. Sherif Mahmoud Emara',
+            url: window.location.href
+          });
+        } catch {}
+      } else {
+        copyText(window.location.href, 'Link Copied');
+      }
+    }
+
+    async function imageToBase64(url) {
+      try {
+        const r = await fetch(url);
+        const b = await r.blob();
+        return new Promise(res => {
+          const reader = new FileReader();
+          reader.onloadend = () => res(reader.result.split(',')[1]);
+          reader.readAsDataURL(b);
+        });
+      } catch {
+        return null;
+      }
+    }
+
+    async function downloadVCardWithImage() {
+      const btn = document.getElementById("saveBtn");
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+      let photoBase64 = await imageToBase64(vCardData.photoUrl);
+
+      let vcf =
+        `BEGIN:VCARD\n` +
+        `VERSION:3.0\n` +
+        `N:${vCardData.ln};${vCardData.fn};;;\n` +
+        `FN:Eng. ${vCardData.fn} ${vCardData.ln}\n` +
+        `TITLE:${vCardData.title}\n` +
+        `ORG:${vCardData.org}\n` +
+        `TEL;TYPE=CELL:${vCardData.phone}\n` +
+        `EMAIL:${vCardData.email}\n` +
+        `URL:${vCardData.url}\n` +
+        `ADR;TYPE=WORK:${vCardData.address}`;
+
+      if (photoBase64) {
+        vcf += `\nPHOTO;ENCODING=b;TYPE=JPEG:${photoBase64}`;
+      }
+      vcf += `\nEND:VCARD`;
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(new Blob([vcf], { type: "text/vcard" }));
+      link.download = "Eng_Sherif_Mahmoud_Emara.vcf";
+      link.click();
+
+      showToast("Contact Saved");
+      btn.innerHTML = originalHTML;
+    }
+
+    let qrMade = false;
+
+    function toggleQR() {
+      const overlay = document.getElementById('qrOverlay');
+      const isOpening = !overlay.classList.contains('active');
+      overlay.classList.toggle('active');
+
+      if (isOpening && !qrMade) {
+        const qrContainer = document.getElementById("qrcode");
+        qrContainer.innerHTML = "";
+
+        const qrText =
+          `BEGIN:VCARD\n` +
+          `VERSION:3.0\n` +
+          `FN:Eng. ${vCardData.fn} ${vCardData.ln}\n` +
+          `TEL:${vCardData.phone}\n` +
+          `URL:${vCardData.url}\n` +
+          `END:VCARD`;
+
+        requestAnimationFrame(() => {
+          new QRCode(qrContainer, {
+            text: qrText,
+            width: 180,
+            height: 180,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+          });
+          qrMade = true;
+        });
+      }
+    }
+  </script>
+</body>
+</html>
