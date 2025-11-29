@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <title>Eng. Sherif Mahmoud Emara | Operations Director</title>
+  <title>Eng. Sherif Emara | Operations Director</title>
 
-  <meta property="og:title" content="Eng. Sherif Mahmoud Emara | Operations Director">
+  <meta property="og:title" content="Eng. Sherif Emara | Operations Director">
   <meta property="og:description" content="Agile Prime - Premium Digital Card">
   <meta property="og:image" content="assets/images/Eng/EngSherif.jpg">
   <meta name="theme-color" content="#000000">
@@ -555,7 +555,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     const vCardData = {
-      fn: "Sherif Mahmoud",
+      fn: "Sherif",
       ln: "Emara",
       title: "Operations Director",
       org: "Agile Prime General Contracting L.L.C",
@@ -592,7 +592,7 @@
       if (navigator.share) {
         try {
           await navigator.share({
-            title: 'Eng. Sherif Mahmoud Emara',
+            title: 'Eng. Sherif Emara',
             url: window.location.href
           });
         } catch {}
@@ -641,7 +641,7 @@
 
       const link = document.createElement("a");
       link.href = URL.createObjectURL(new Blob([vcf], { type: "text/vcard" }));
-      link.download = "Eng_Sherif_Mahmoud_Emara.vcf";
+      link.download = "Eng_Sherif_Emara.vcf";
       link.click();
 
       showToast("Contact Saved");
