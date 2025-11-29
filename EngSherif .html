@@ -7,7 +7,7 @@
 
   <meta property="og:title" content="Eng. Sherif Mahmoud Emara | Operations Director">
   <meta property="og:description" content="Agile Prime - Premium Digital Card">
-  <meta property="og:image" content="assets/images/Eng/EngOsama.jpg">
+  <meta property="og:image" content="assets/images/Eng/EngSherif.jpg">
   <meta name="theme-color" content="#000000">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,6 +53,7 @@
       align-items: center;
       justify-content: center;
       transition: opacity 0.6s ease;
+      animation: hideSplash 0.6s ease 1.5s forwards;
     }
     .splash-logo {
       width: 90px;
@@ -63,7 +64,13 @@
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(0.95); opacity: 0.8; }
     }
-    .splash-hidden { opacity: 0; pointer-events: none; }
+    @keyframes hideSplash {
+      to {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }
+    }
 
     /* --- Toast Notification --- */
     .toast {
@@ -102,13 +109,6 @@
       background: var(--border-dim);
       box-shadow: 0 40px 100px rgba(0,0,0,0.95);
       overflow: hidden;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    .vcard-wrapper.visible {
-      opacity: 1;
-      transform: translateY(0);
     }
     .vcard-wrapper::before {
       content: '';
@@ -411,7 +411,7 @@
          onerror="this.src='https://ui-avatars.com/api/?name=A&background=a78d57&color=000&size=100&rounded=true'">
   </div>
 
-  <div class="vcard-wrapper" id="mainCard">
+  <div class="vcard-wrapper visible" id="mainCard">
     <div class="vcard">
       <div class="avatar-container">
         <img
@@ -425,7 +425,7 @@
         </div>
       </div>
 
-      <h1 class="name">Eng. Sherif Mahmoud Emara</h1>
+      <h1 class="name">Eng. Sherif Emara</h1>
       <div class="role">Operations Director</div>
 
       <div class="link-list">
@@ -494,13 +494,13 @@
         </div>
 
         <!-- Website -->
-        <a href="https://agilerac.com" target="_blank" class="link-item">
+        <a href="https://agileprime-gc.com" target="_blank" class="link-item">
           <div class="icon-box">
             <i class="fa-solid fa-globe"></i>
           </div>
           <div class="link-text">
             <span class="label">Website</span>
-            <span class="value">agilerac.com</span>
+            <span class="value">agileprime-gc</span>
           </div>
           <i class="fa-solid fa-arrow-up-right-from-square copy-icon" style="opacity:0.5"></i>
         </a>
@@ -513,7 +513,7 @@
           </div>
           <div class="link-text">
             <span class="label">Location</span>
-            <span class="value">Bay View Tower, Dubai</span>
+            <span class="value">1708, Bay View Tower, Dubai</span>
           </div>
         </a>
       </div>
@@ -554,15 +554,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('splash').classList.add('splash-hidden');
-        setTimeout(() => {
-          document.getElementById('mainCard').classList.add('visible');
-        }, 200);
-      }, 1500);
-    });
-
     const vCardData = {
       fn: "Sherif Mahmoud",
       ln: "Emara",
@@ -570,9 +561,9 @@
       org: "Agile Prime General Contracting L.L.C",
       phone: "+966537606681",
       email: "SHERIFEMARA@AGILERAC.COM",
-      url: "https://agilerac.com",
+      url: "https://agileprime-gc.com",
       address: ";;Bay View Tower 1708, Business Bay;Dubai;;;UAE",
-      photoUrl: "assets/images/Eng/EngOsama.jpg"
+      photoUrl: "assets/images/Eng/EngSherif.jpg"
     };
 
     function showToast(message) {
